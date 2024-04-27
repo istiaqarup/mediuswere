@@ -14,7 +14,12 @@ class Product(TimeStampMixin):
     sku = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
 
-
+    @property
+    def get_productvariant(self):
+        return self.productvariant_set.all()
+    @property
+    def get_productvariantprice(self):
+        return self.productvariantprice_set.all()
 class ProductImage(TimeStampMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     file_path = models.URLField()
@@ -24,6 +29,7 @@ class ProductVariant(TimeStampMixin):
     variant_title = models.CharField(max_length=255)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 
 
 class ProductVariantPrice(TimeStampMixin):

@@ -1,0 +1,23 @@
+{% extends 'backend/base.html' %}
+
+{% block title %} Product List {% endblock %}
+
+{% block content %}
+  <h1>{{ data_summary.title }}</h1>
+  <p>{{ data_summary.description }}</p>
+  <p>SKU: {{ data_summary.sku }}</p>
+
+  <h2>Variants:</h2>
+  <ul>
+    {% for variant in data_summary.variants %}
+      <li>{{ variant }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Images:</h2>
+  <ul>
+    {% for image in data_summary.images %}
+      <li><img src="{{ image }}" alt="Product Image"></li>
+    {% endfor %}
+  </ul>
+{%endblock%}  

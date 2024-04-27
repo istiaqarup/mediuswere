@@ -8,20 +8,28 @@
         <h1 class="h3 mb-0 text-gray-800">Products</h1>
     </div>
 
+    <!-- <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">Apply Filters</button>
+    </form> -->
 
     <div class="card">
         <form action="" method="get" class="card-header">
+           
             <div class="form-row justify-content-between">
+                
                 <div class="col-md-2">
                     <input type="text" name="title" placeholder="Product Title" class="form-control">
                 </div>
-                <div class="col-md-2">
-                    <select name="variant" id="" class="form-control">
-                        <option selected disabled>--Select A Variant--</option>
-
-                    </select>
-                </div>
-
+                
+                    <div class="col-md-2">
+                        <select name="variant" id="" class="form-control">
+                           {%for product in products%}
+                            <option value="{{product.title}}">{{product.title}}</option>
+                           {%endfor%}
+                        </select>
+                    </div>
+               
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -56,56 +64,42 @@
 
                     <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                        <td>Quality product in low cost</td>
+                        {% for product in products %}
+                        <td>{{product.id}}</td>
+                        <td>{{product.title}} <br> {{product.created_at}}</td>
+                        <td>{{product.description}}</td>
                         <td>
+                            
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                                {% for variant in product.get_productvariant %}
                                 <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Full
+                                    {{ variant.variant_title }}{% if not forloop.last %}, {% endif %}
                                 </dt>
+                                {% endfor %}
+                                {% for variants in product.get_productvariantprice %}    
                                 <dd class="col-sm-9">
                                     <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
+                                        
+                                        <dd class="col-sm-4 pb-0">{{ variants.price }}</dd>
+                                        <dd class="col-sm-8 pb-0"> {{ variants.stock }}</dd>
+                                    </dl>       
+            
                                 </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
+                                {%endfor%}    
                             </dl>
                             <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                             </button>
                         </td>
                         <td>
+                           
                             <div class="btn-group btn-group-sm">
-                                <a href="" class="btn btn-success">Edit</a>
+                           
+                                <a href="{% url 'product:update_product' product.pk %}" class="btn btn-success">Edit</a>
+                          
                             </div>
+                            
                         </td>
+                    {% endfor %}   
                     </tr>
                     </tbody>
 
@@ -124,5 +118,22 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ products.number }} of {{ products.paginator.num_pages }}.
+            </span>
+    
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">next</a>
+                <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 {% endblock %}

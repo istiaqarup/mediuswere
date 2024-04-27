@@ -6,13 +6,37 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Create Product</h1>
         <a href="{% url 'product:create.product' %}" class="float-right btn btn-primary">All Product</a>
-    </div>
 
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <!-- Variants -->
+            <label for="variants">Variants:</label>
+            <select name="variants" id="variants" multiple>
+                {% for variant in variants %}
+                <input type="checkbox" name="variants" value="{{ variant.title }}"> {{ variant.title }}
+                {%endfor%}
+            </select>
+            
+            
+            <label for="prices">Prices:</label>
+            <input type="text" name="prices" id="prices" placeholder="Enter price" multiple>
+            
+           
+            <label for="images">Images:</label>
+            <input type="file" name="images" id="images" multiple>
+            
+            <button type="submit">Create Product</button>
+          </form>
+    </div>    
+    </div>
+    
 
     <script>
-    var varients = {{ variants|safe }}
-    console.log(typeof varients)
-    </script>
+    // var varients = {{ variants|safe }}
+    // console.log(typeof varients)
+    </script>c
 
     <div id="root">
         <CreateProduct id="variants" data-variants="{{ variants|safe }}"></CreateProduct>

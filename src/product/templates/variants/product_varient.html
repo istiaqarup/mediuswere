@@ -1,0 +1,14 @@
+{% extends 'backend/base.html' %}
+
+{% block title %} Create Variant {% endblock %}
+
+{% block content %}
+    {% for variant_group in grouped_variants %}
+    <h2>Size: {{ variant_group.size }}, Color: {{ variant_group.color }}</h2>
+    <ul>
+    {% for variant in variant_group %}
+        <li>{{ variant }}</li>
+    {% endfor %}
+    </ul>
+    {% endfor %}
+{%endblock}
